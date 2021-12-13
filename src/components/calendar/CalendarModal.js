@@ -1,5 +1,10 @@
 import React from 'react';
+
 import Modal from 'react-modal';
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { uiCloseModal } from '../../actions/ui';
+
 import { EventModal } from './EventModal';
 
 const customStyles = {
@@ -16,15 +21,19 @@ Modal.setAppElement('#root'); // setAppElement es el elemento con el que se liga
 
 export const CalendarModal = () => {
 
-    const closeModal = () => {
+    const dispatch = useDispatch();
 
+    const { modalOpen } = useSelector(state => state.ui);
+
+    const closeModal = () => {
+        dispatch( uiCloseModal() );
     }
 
     return (
         <Modal
         className="modal"
         overlayClassName="modal-fondo"
-        isOpen={ true }
+        isOpen={ modalOpen }
         closeTimeoutMS={ 200 }
         onRequestClose={ closeModal }
         style={ customStyles }
