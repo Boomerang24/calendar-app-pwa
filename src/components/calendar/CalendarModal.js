@@ -3,6 +3,7 @@ import React from 'react';
 import Modal from 'react-modal';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
+import { eventClearActive } from '../../actions/events';
 import { uiCloseModal } from '../../actions/ui';
 
 import { EventModal } from './EventModal';
@@ -27,6 +28,7 @@ export const CalendarModal = () => {
 
     const closeModal = () => {
         dispatch( uiCloseModal() );
+        dispatch( eventClearActive() );
     }
 
     return (
@@ -38,7 +40,7 @@ export const CalendarModal = () => {
         onRequestClose={ closeModal }
         style={ customStyles }
         >
-            <EventModal />
+            <EventModal closeModal={ closeModal }/>
             
         </Modal>
     )

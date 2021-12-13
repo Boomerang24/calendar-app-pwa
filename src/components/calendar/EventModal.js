@@ -1,25 +1,42 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import DateTimePicker from 'react-datetime-picker';
 import moment from 'moment';
 import Swal from 'sweetalert2';
+import { useDispatch, useSelector } from 'react-redux';
+import { eventAddNew, eventUpdated } from '../../actions/events';
 
 const now = moment().minutes(0).seconds(0).add(1, 'hours');
 const endDate = now.clone().add(1, 'hours');
 
-export const EventModal = () => {
+const initEvent = {
+    title: '',
+    notes: '',
+    start: now.toDate(),
+    end: endDate.toDate()
+}
+
+export const EventModal = ({ closeModal }) => {
+
+    const { activeEvent } = useSelector(state => state.calendar);
+    const dispatch = useDispatch();
 
     const [dateStart, setDateStart] = useState( now.toDate() );
     const [dateEnd, setDateEnd] = useState( endDate.toDate() );
     const [validTitle, setValidTitle] = useState(true);
 
-    const [formValues, setFormValues] = useState({
-        title: 'Evento',
-        notes: '',
-        start: now.toDate(),
-        end: endDate.toDate()
-    });
+    const [formValues, setFormValues] = useState( initEvent );
 
     const { title, notes, start, end} = formValues;
+
+    useEffect(() => {
+        
+        if( activeEvent ){
+            setFormValues( activeEvent );
+        } else {
+            setFormValues( initEvent );
+        }
+
+    }, [activeEvent, setFormValues]);
 
     const handleInputChange = ({ target }) => {
         setFormValues({
@@ -59,13 +76,33 @@ export const EventModal = () => {
         }
 
         //TODO: realizar grabacion en DB
+
+        if( activeEvent ){
+
+            dispatch( eventUpdated( formValues ));
+
+        } else {
+            
+            dispatch( eventAddNew({
+                ...formValues,
+                id: new Date().getTime(),
+                user: {
+                    _id: '123',
+                    name: 'Alexis'
+                }
+            }) );
+        };
+
+
+        closeModal();
+        setFormValues( initEvent );
         setValidTitle( true );
         
     }
 
     return (
         <div>
-            <h1> Nuevo evento </h1>
+            <h1> { ( activeEvent ) ? "Editando evento" : "Nuevo evento"} </h1>
             <hr />
             <form 
                 className="container"
