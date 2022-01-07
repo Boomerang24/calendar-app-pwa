@@ -75,7 +75,7 @@ export const EventModal = ({ closeModal }) => {
             setValidTitle( false );
         }
 
-        //TODO: realizar grabacion en DB
+        // Realizar grabacion en DB
 
         if( activeEvent ){
 
