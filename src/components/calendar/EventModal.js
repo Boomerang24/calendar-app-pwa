@@ -3,7 +3,7 @@ import DateTimePicker from 'react-datetime-picker';
 import moment from 'moment';
 import Swal from 'sweetalert2';
 import { useDispatch, useSelector } from 'react-redux';
-import { eventAddNew, eventUpdated } from '../../actions/events';
+import { eventStartAddNew, eventStartUpdate } from '../../actions/events';
 
 const now = moment().minutes(0).seconds(0).add(1, 'hours');
 const endDate = now.clone().add(1, 'hours');
@@ -79,18 +79,11 @@ export const EventModal = ({ closeModal }) => {
 
         if( activeEvent ){
 
-            dispatch( eventUpdated( formValues ));
+            dispatch( eventStartUpdate( formValues ));
 
         } else {
             
-            dispatch( eventAddNew({
-                ...formValues,
-                id: new Date().getTime(),
-                user: {
-                    _id: '123',
-                    name: 'Alexis'
-                }
-            }) );
+            dispatch( eventStartAddNew(formValues) );
         };
 
 
