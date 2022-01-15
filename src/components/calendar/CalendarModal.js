@@ -18,7 +18,10 @@ const customStyles = {
       transform: 'translate(-50%, -50%)',
     },
 };
-Modal.setAppElement('#root'); // setAppElement es el elemento con el que se ligara el modal
+
+if( process.env.NODE_ENV !== 'test' ){
+    Modal.setAppElement('#root'); // setAppElement es el elemento con el que se ligara el modal
+}
 
 export const CalendarModal = () => {
 
@@ -39,6 +42,8 @@ export const CalendarModal = () => {
         closeTimeoutMS={ 200 }
         onRequestClose={ closeModal }
         style={ customStyles }
+        /* Usado para pruebas en modal, por que no tiene espacio para redibujar */
+        ariaHideApp={ !process.env.NODE_ENV === 'test' } 
         >
             <EventModal closeModal={ closeModal }/>
             
