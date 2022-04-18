@@ -72,7 +72,7 @@ export const EventModal = ({ closeModal }) => {
         }
 
         if ( title.trim().length < 2 ){
-            return setValidTitle( false );
+            setValidTitle( false );
         }
 
         // Realizar grabacion en DB
